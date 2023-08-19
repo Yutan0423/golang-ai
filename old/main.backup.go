@@ -1,3 +1,9 @@
+/**
+* LangChainを使う必要ある時のための予備パッケージ
+* 必要な時にすぐに使えるようにするためのメモ
+* Ref: https://github.com/tmc/langchaingo/blob/main/docs/docs/getting-started/guide-llm.mdx
+**/
+
 package backup
 
 import (
