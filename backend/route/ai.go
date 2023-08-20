@@ -2,13 +2,11 @@ package route
 
 import (
 	"backend/usecase"
-	"encoding/json"
 	"log"
 	"net/http"
 )
 
 func AIHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
 	res := usecase.GetOpenAIResponse()
 	if len(res.Choices) == 0 {
 		log.Fatalln("Response not found")
@@ -16,6 +14,7 @@ func AIHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(res.Choices[0].Messages.Content)
+	w.Write([]byte(res.Choices[0].Messages.Content))
 }

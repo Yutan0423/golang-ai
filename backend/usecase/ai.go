@@ -33,7 +33,9 @@ func GetOpenAIResponse() entity.OpenaiResponse {
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 
-	c := &http.Client{}
+	c := &http.Client{
+		Timeout: entity.OpenaiTimeout,
+	}
 	resp, err := c.Do(req)
 	if err != nil {
 		log.Fatal(err)

@@ -1,5 +1,7 @@
 package entity
 
+import "time"
+
 type OpenaiRequest struct {
 	Model    string    `json:"model"`
 	Messages []Message `json:"messages"`
@@ -31,6 +33,8 @@ type Usage struct {
 }
 
 const OpenaiURL = "https://api.openai.com/v1/chat/completions"
+
+const OpenaiTimeout = 30 * time.Second
 
 const Prompt = `
 Webエンジニアの設計力を試す問題を5問出してほしい。
