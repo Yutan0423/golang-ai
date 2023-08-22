@@ -5,6 +5,7 @@ import (
 	"backend/util"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -57,6 +58,7 @@ func GetOpenAIResponse() entity.OpenaiResponse {
 		println("Error: ", err.Error())
 		return entity.OpenaiResponse{}
 	}
+	fmt.Printf("res: %v", res)
 
 	messages = append(messages, entity.Message{
 		Role:    "assistant",

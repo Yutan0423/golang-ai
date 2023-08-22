@@ -1,6 +1,6 @@
 import useSWR from "swr";
-import { Question } from "../domains/ai";
-import { fetchAi } from "../interfaces/ai";
+import { Question } from "../domains/openai";
+import { fetchAi } from "../interfaces/openai";
 
 type Response = {
   data: Question[];

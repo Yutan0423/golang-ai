@@ -1,0 +1,9 @@
+version: "1"
+project:
+  id: ""
+packages:
+  - path: "db/generated/sqlc"
+    name: "sqlc"
+    engine: "mysql"
+    schema: "db/migrations/"
+    queries: "db/query/"

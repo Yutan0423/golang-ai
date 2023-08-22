@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Question } from "../../domains/ai";
+import { Question } from "../../domains/openai";
 
 type Props = {
   data: Question[];
@@ -14,7 +14,11 @@ export const Body: FC<Props> = ({ data }) => (
           <ul className="p-4">
             {q.choices &&
               q.choices.length > 0 &&
-              q.choices.map((choice, idx) => <li key={idx}>{choice}</li>)}
+              q.choices.map((choice, idx) => <li key={idx}>
+                  <span>
+                  {choice}
+                  </span>
+                </li>)}
           </ul>
           <p>答え: {q.answer}</p>
         </div>
