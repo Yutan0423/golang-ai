@@ -8,8 +8,9 @@ run:
 	@go install github.com/cespare/reflex@latest
 	@reflex -r '\.go$$' -s go run main.go
 
-db_exec:
-	@docker-compose exec mysql /bin/bash
+mysql:
+	@docker exec -it backend-mysql-1 mysql -u user -ppassword -h localhost db
+	# @docker-compose exec mysql /bin/bash
 	# mysql -u user -ppassword -h mysql -P 3306
 
 test:

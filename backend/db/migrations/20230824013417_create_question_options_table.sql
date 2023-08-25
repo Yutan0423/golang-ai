@@ -1,6 +1,6 @@
 -- migrate:up
-CREATE TABLE choices (
-    choice_id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE question_options (
+    option_id INT PRIMARY KEY AUTO_INCREMENT,
     question_id INT NOT NULL,
     content VARCHAR(255) NOT NULL,
     ctime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -9,4 +9,4 @@ CREATE TABLE choices (
 );
 
 -- migrate:down
-DROP TABLE choices;
+DROP TABLE question_options;

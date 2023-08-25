@@ -9,6 +9,17 @@ import (
 	"context"
 )
 
+const getLatestQuestionID = `-- name: GetLatestQuestionID :one
+SELECT LAST_INSERT_ID()
+`
+
+func (q *Queries) GetLatestQuestionID(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getLatestQuestionID)
+	var last_insert_id int64
+	err := row.Scan(&last_insert_id)
+	return last_insert_id, err
+}
+
 const insertQuestion = `-- name: InsertQuestion :exec
 INSERT INTO questions (
     content

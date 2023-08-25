@@ -28,6 +28,24 @@ CREATE TABLE `answers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `question_options`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `question_options` (
+  `option_id` int NOT NULL AUTO_INCREMENT,
+  `question_id` int NOT NULL,
+  `content` varchar(255) NOT NULL,
+  `ctime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `utime` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`option_id`),
+  KEY `question_id` (`question_id`),
+  CONSTRAINT `question_options_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `questions`
 --
 
@@ -76,6 +94,6 @@ CREATE TABLE `schema_migrations` (
 LOCK TABLES `schema_migrations` WRITE;
 INSERT INTO `schema_migrations` (version) VALUES
   ('20230822020755'),
-  ('20230822021827'),
-  ('20230822022329');
+  ('20230822022329'),
+  ('20230824013417');
 UNLOCK TABLES;

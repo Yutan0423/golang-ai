@@ -10,3 +10,6 @@ LIMIT ?;
 INSERT INTO questions (
     content
 ) VALUES (?);
+
+-- name: GetLatestQuestionID :one
+SELECT LAST_INSERT_ID();

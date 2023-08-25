@@ -1,13 +1,15 @@
 package main
 
 import (
+	"backend/repository"
 	"backend/route"
-	"database/sql"
+	"backend/usecase"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/jmoiron/sqlx"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -15,18 +17,23 @@ import (
 func main() {
 	db := connectDB()
 	defer db.Close()
+
+	questionRepository := repository.NewQuestion(db)
+	questionUsecase := usecase.NewQuestion(*questionRepository)
+	questionRoute := route.NewQuestion(*questionUsecase)
+
 	r := mux.NewRouter()
 	r.HandleFunc("/ai", route.AIHandler).Methods("GET")
-	r.HandleFunc("/question", route.AIHandler).Methods("POST")
+	r.HandleFunc("/question", questionRoute.CreateQuestionsHandler).Methods("POST")
 
 	http.Handle("/", r)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func connectDB() *sql.DB {
+func connectDB() *sqlx.DB {
 	dsn := "user:password@tcp(mysql:3307)/db?charset=utf8&parseTime=true"
 	for {
-		db, err := sql.Open("mysql", dsn)
+		db, err := sqlx.Open("mysql", dsn)
 		if err != nil {
 			log.Printf("Error connecting to database: %v", err)
 		} else {

@@ -17,17 +17,17 @@ type Answer struct {
 	Utime      sql.NullTime
 }
 
-type Choice struct {
-	ChoiceID   int32
-	QuestionID int32
-	Content    string
-	Ctime      sql.NullTime
-	Utime      sql.NullTime
-}
-
 type Question struct {
 	QuestionID int32
 	Content    string
 	Ctime      time.Time
 	Utime      time.Time
+}
+
+type QuestionOption struct {
+	OptionID   int32
+	QuestionID int32
+	Content    string
+	Ctime      sql.NullTime
+	Utime      sql.NullTime
 }
