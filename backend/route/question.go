@@ -3,9 +3,11 @@ package route
 import (
 	"backend/entity"
 	"backend/usecase"
+	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"log"
 	"net/http"
 )
 
@@ -20,15 +22,10 @@ func NewQuestion(uq usecase.Question) *Question {
 }
 
 func (q *Question) CreateQuestionsHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("CreateQuestionsHandler")
 	fmt.Println("curl http://localhost:8080/question -X POST")
 
-	// len := r.ContentLength
-	// body := make([]byte, len)
-	// r.Body.Read(body)
-
 	var questions []entity.Question
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, "Failed to read request body", http.StatusInternalServerError)
 		return
@@ -43,11 +40,11 @@ func (q *Question) CreateQuestionsHandler(w http.ResponseWriter, r *http.Request
 	}
 	fmt.Println(questions)
 
-	// err := q.usecase.CreateQuestions(context.Background(), questions)
-	// if err != nil {
-	// 	log.Fatalln("Error: ", err.Error())
-	// 	w.WriteHeader(http.StatusInternalServerError)
-	// 	return
-	// }
+	err = q.usecase.CreateQuestions(context.Background(), questions)
+	if err != nil {
+		log.Fatalln("Error: ", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusCreated)
 }

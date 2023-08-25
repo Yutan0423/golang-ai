@@ -31,7 +31,7 @@ func main() {
 }
 
 func connectDB() *sqlx.DB {
-	dsn := "user:password@tcp(mysql:3307)/db?charset=utf8&parseTime=true"
+	dsn := "user:password@tcp(mysql:3306)/db?charset=utf8&parseTime=true"
 	for {
 		db, err := sqlx.Open("mysql", dsn)
 		if err != nil {
