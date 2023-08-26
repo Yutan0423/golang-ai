@@ -6,27 +6,33 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
+type OpenAI struct{}
+
+func NewOpenAI() *OpenAI {
+	return &OpenAI{}
+}
+
 var messages []entity.Message
 
-func GetOpenAIResponse() entity.OpenaiResponse {
+func (o *OpenAI) ScoreByAnswer(answer string) entity.OpenaiResponse {
 	apiKey := util.GetEnv("OPENAI_API_KEY")
+	content := fmt.Sprintf(entity.ScoreLastQuestionPrompt, answer)
 	messages = append(messages, entity.Message{
 		Role:    "user",
-		Content: entity.Prompt,
+		Content: content,
 	})
 	requestBody := entity.OpenaiRequest{
 		Model:    "gpt-3.5-turbo",
 		Messages: messages,
 	}
 
+	fmt.Printf("requestBody: %v", requestBody)
 	requestJson, _ := json.Marshal(requestBody)
-
 	req, err := http.NewRequest("POST", entity.OpenaiURL, bytes.NewBuffer(requestJson))
 	if err != nil {
 		log.Fatal(err)
@@ -41,12 +47,7 @@ func GetOpenAIResponse() entity.OpenaiResponse {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}(resp.Body)
+	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {

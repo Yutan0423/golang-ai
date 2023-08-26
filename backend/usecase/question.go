@@ -25,3 +25,11 @@ func (q *Question) CreateQuestions(ctx context.Context, questions []entity.Quest
 	}
 	return nil
 }
+
+func (q *Question) ListQuestions(ctx context.Context) ([]*entity.Question, error) {
+	res, err := q.repository.ListQuestions(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
