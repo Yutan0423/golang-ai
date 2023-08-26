@@ -48,3 +48,19 @@ func (q *Question) CreateQuestionsHandler(w http.ResponseWriter, r *http.Request
 	}
 	w.WriteHeader(http.StatusCreated)
 }
+
+func (q *Question) ListQuestionsHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("curl http://localhost:8080/question -X GET")
+
+	questions, err := q.usecase.ListQuestions(context.Background())
+	if err != nil {
+		log.Fatalln("Error: ", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	fmt.Println(questions)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(questions)
+}

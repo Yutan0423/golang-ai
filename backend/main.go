@@ -22,8 +22,12 @@ func main() {
 	questionUsecase := usecase.NewQuestion(*questionRepository)
 	questionRoute := route.NewQuestion(*questionUsecase)
 
+	openaiUsecase := usecase.NewOpenAI()
+	openaiRoute := route.NewOpenAI(*openaiUsecase)
+
 	r := mux.NewRouter()
-	r.HandleFunc("/ai", route.AIHandler).Methods("GET")
+	r.HandleFunc("/openai", openaiRoute.ScoreByAnswer).Methods("POST")
+	r.HandleFunc("/question", questionRoute.ListQuestionsHandler).Methods("GET")
 	r.HandleFunc("/question", questionRoute.CreateQuestionsHandler).Methods("POST")
 
 	http.Handle("/", r)

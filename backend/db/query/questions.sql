@@ -1,5 +1,6 @@
 -- name: ListQuestions :many
 SELECT
+    q.question_id,
     q.content AS question_content,
     a.content AS answer_content
 FROM questions AS q
