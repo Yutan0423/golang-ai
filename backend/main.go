@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
@@ -35,7 +36,10 @@ func main() {
 }
 
 func connectDB() *sqlx.DB {
-	dsn := "user:password@tcp(mysql:3306)/db?charset=utf8&parseTime=true"
+	// dsn := "user:password@tcp(mysql:3306)/db?charset=utf8&parseTime=true"
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	dsn := fmt.Sprintf("%s:%s@tcp(aws.connect.psdb.cloud)/neko?tls=true", user, password)
 	for {
 		db, err := sqlx.Open("mysql", dsn)
 		if err != nil {
