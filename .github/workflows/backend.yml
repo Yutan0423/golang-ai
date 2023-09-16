@@ -38,13 +38,15 @@ jobs:
         run: |
           cd backend
           go test -v ./...
+
   deploy:
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with: ref ${{ github.ref }}
+        with: ${{ github.ref }}
 
       - id: "auth"
         uses: "google-github-actions/auth@v1"
