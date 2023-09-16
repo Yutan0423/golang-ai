@@ -63,9 +63,11 @@ jobs:
         run: |
           gcloud auth configure-docker us-west1-docker.pkg.dev
 
-      - name: set TAG
+      - name: set TAG with date
         run: |
-          echo "TAG=$(echo $GITHUB_REF | awk -F/ '{print $NF}')" >> $GITHUB_ENV
+          BRANCH_NAME=$(echo $GITHUB_REF | awk -F/ '{print $NF}')
+          DATE_TAG=$(date +'%Y%m%d')
+          echo "TAG=$BRANCH_NAME-$DATE_TAG" >> $GITHUB_ENV
 
       - name: Build
         run: |
@@ -76,3 +78,12 @@ jobs:
         run: |
           cd backend
           docker push us-west1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/go-api/api-image:${{ env.TAG }}
+
+      - name: Deploy
+        run: |-
+          gcloud run deploy api-image \
+            --project=${{ secrets.PROJECT_ID }} \
+            --image=us-west1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/go-api/api-image:${{ env.TAG }} \
+            --region=us-west1 \
+            --service-account=${{ secrets.SERVICE_ACCOUNT }} \
+            --allow-unauthenticated
