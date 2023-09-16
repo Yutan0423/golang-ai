@@ -46,7 +46,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with: ${{ github.ref }}
+        ref: ${{ github.ref }}
 
       - id: "auth"
         uses: "google-github-actions/auth@v1"
