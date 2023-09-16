@@ -34,6 +34,8 @@ jobs:
         if: ${{ steps.cache-go.outputs.cache-hit != 'true' }}
         run: |
           cd backend
+          pwd
+          ls -la
           go mod download
 
       - name: Run Go tests
