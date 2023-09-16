@@ -30,8 +30,10 @@ jobs:
         shell: bash
         if: ${{ steps.cache-go.outputs.cache-hit != 'true' }}
         run: |
+          cd backend
           go mod download
 
       - name: Run Go tests
         run: |
+          cd backend
           go test -v ./...
