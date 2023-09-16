@@ -38,3 +38,38 @@ jobs:
         run: |
           cd backend
           go test -v ./...
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with: ref ${{ github.ref }}
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: "${{ secrets.GCLOUD_AUTH }}"
+
+      - name: Setup Google Cloud
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.PROJECT_ID }}
+
+      - name: Configure docker for artifact registry
+        run: |
+          gcloud auth configure-docker us-west1-docker.pkg.dev
+
+      - name: set TAG
+        run: |
+          echo "TAG=$(echo $GITHUB_REF | awk -F/ '{print $NF}')" >> $GITHUB_ENV
+
+      - name: Build
+        run: |
+          cd backend
+          docker build -t us-west1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/go-api/api-image:${{ env.TAG }} .
+
+      - name: Push
+        run: |
+          cd backend
+          docker push us-west1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/go-api/api-image:${{ env.TAG }}
